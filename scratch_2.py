@@ -2,7 +2,7 @@
 # Aim: To find the lowest rate between several 
 # phone operators based on the given phone prefix.
 
-# For more efficiency the solution will be multiproces search..
+# For more efficiency the solution will be multiprocess search..
 # first get number of cores, then assign the dict search to 
 # different process affinities.. Also maybe to introduce
 # generators instead of iterators..
