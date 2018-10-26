@@ -26,3 +26,4 @@ if __name__ == '__main__':
 
 #TODO: what to do with app routes now?
 # The picture file is a location on the disk not an actual picture send to server.
+ 
