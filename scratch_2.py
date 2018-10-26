@@ -1,6 +1,11 @@
-# for more efficiency the solution is multiprocessing.
-# first get number of cores, then assign the dict search
-# to different process affinities..
+# Author: Kaveh Piroozram, 2018 Oct
+# Aim: To find the lowest rate between several 
+# phone operators based on the given phone prefix.
+
+# For more efficiency the solution will be multiproces search..
+# first get number of cores, then assign the dict search to 
+# different process affinities.. Also maybe to introduce
+# generators instead of iterators..
 
 import random
 import time
