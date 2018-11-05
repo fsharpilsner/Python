@@ -11,6 +11,7 @@ import random
 import time
 import re
 import json
+import string
 
 
 # create a dictionary with unique entries
@@ -21,10 +22,21 @@ def price_list():
     rate_table = {random.randint(1,9999999): round(random.uniform(0.1, 2.0), 2) for x in range(2000)}
     return rate_table
 
-Amount= int(input('Please enter amount of price lists:'))
+while True:
+    try:
+        Input= input('Please enter amount of price lists: ')
+        valid = str.isdigit(Input) and int(Input)>0
+        if not valid:
+            raise ValueError
+        else:
+            break
+    except ValueError:
+        print("invalid number!")
+
+Amount= int(Input)
 
 #list of dict
-Operators = []
+Operators = []  
 
 for i in range(Amount):
 
@@ -33,18 +45,25 @@ for i in range(Amount):
     Operators.append(lista)
 
     #create log
-    rate_file_name = "operator_" + str(i+1)
+    rate_file_name = "operator_" + str(i)
     with open(rate_file_name, 'w') as op_file:
         #data.write(str(lista)) #not friendly to verify manually..
         op_file.write ('[' + '\n'.join(json.dumps(i) for i in lista.items()) + ']\n')
 
 
 #################################################
-tmp = input('Please enter your phone number:')
-tmp = tmp.lstrip("0") # 0046=> 46
-phone_number= re.sub("\\+|\\-| |\\ ", "", tmp) #+46-730-8123 -> 467308123
-if not phone_number.isdigit() :
-        print("sorry!")
+while True:
+
+        tmp = input('Please enter your phone number: ')
+        tmp = tmp.lstrip("0") # 0046=> 46
+        phone_number= re.sub("\\+|\\-| |\\ ", "", tmp) #+46-730-8123 -> 467308123
+
+        # check if it's a number and looks like a valid phone number..
+        valid = str.isdigit(phone_number) and int(phone_number) > 0 and len(phone_number)>7 and phone_number
+        if not valid :
+            print("Sorry! wrong phone number")
+        else:
+            break
 #################################################
 
 # to search for first 7 characters
@@ -52,7 +71,6 @@ if not phone_number.isdigit() :
 
 found=0
 t = 0
-# only pairs with right prefix are stored here for later comparision.
 current_rate = dict.fromkeys("99999999", 99999.9999) #format
 min_rate = 0
 
@@ -72,14 +90,8 @@ while (t < Amount):
             z= "^" + s[0:i]
 
             if (re.match(z, phone_number)):
-                #get the dict element (prefix:rate)which matches the prefix at each loop
-                #& store it in the current_rate dict
+                #container with the lowest rates
                  current_rate[t]= Operators[t].get(prefix) #(key=prefix) ==>value=rate
-
-                 #here we could introduce a function to get the common numbers
-                 #with the subscriber from begining.
-                 #print ("found prefix", prefix )
-
                  found=1
                  break
     t +=1
@@ -91,8 +103,8 @@ while (t < Amount):
 if (found):
     min_rate = min(current_rate.items(), key=lambda x: x[1])
     a = list(min_rate)  # access contents of iterable
-    print ("Cheapest rate was offred by operator: ", a[0]+1,".The price is", a[1]," kr/min" )
+    print ("Cheapest rate was offred by operator: ", a[0],".The price is", a[1]," kr/min" )
 
 else:
     print("Sorry no operator supports your number.")
- 
+
